@@ -1,0 +1,339 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#17263b">
+  <meta name="description" content="Meet RoboDev, your AI coding co-pilot. Turn ideas into code, untangle bugs and keep your next build moving.">
+  <title>RoboDev — Built for what's next.</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='3' fill='%2317263b'/%3E%3Cpath d='M7 9h9a5 5 0 0 1 0 10H7zm9 10 8 8M7 9v18' fill='none' stroke='%23b7dcf2' stroke-width='3'/%3E%3C/svg%3E">
+  <style>
+    :root { color-scheme: dark; --ink:#e7edf5; --muted:#b6c5d5; --dim:#91a6bf; --navy:#17263b; --dark:#101d30; --ice:#b6e1f8; --line:#657b95; --metal:linear-gradient(180deg,#8495a9 0%,#596d84 10%,#4f637b 45%,#354b65 49%,#405671 92%,#73879e 100%); --mono:'Courier New',monospace; }
+    * { box-sizing:border-box; }
+    html { scroll-behavior:smooth; scroll-padding-top:1.5rem; }
+    body { margin:0; background-color:#17253a; background-image:linear-gradient(90deg,transparent 0 31px,#6b7e9813 31px 32px),repeating-linear-gradient(0deg,#61759005 0 1px,transparent 1px 4px); color:var(--ink); font-family:Arial,Helvetica,sans-serif; font-size:1rem; line-height:1.6; }
+    body::before { content:''; position:fixed; z-index:-1; inset:0; background:radial-gradient(ellipse at 50% 0%,#6b82a14a,transparent 70%); pointer-events:none; }
+    a { color:inherit; text-decoration:none; }
+    button { font:inherit; cursor:pointer; }
+    button,a { -webkit-tap-highlight-color:transparent; }
+    a:focus-visible,button:focus-visible { outline:3px solid var(--ice); outline-offset:4px; }
+    ::selection { background:#b6e1f8; color:#102037; }
+    .skip { position:absolute; top:-5rem; left:1rem; z-index:30; padding:.75rem 1.5rem; color:var(--dark); background:var(--ice); }
+    .skip:focus { top:1rem; }
+    .site { width:min(1320px,calc(100% - 64px)); margin:34px auto 32px; padding:9px; border:1px solid #93a5bb; background:linear-gradient(90deg,#344a65,#75879e 4px,#425974 9px,#354b66 calc(100% - 9px),#8494a9 calc(100% - 5px),#30455f); box-shadow:0 0 0 3px #0d192bb0,0 0 0 5px #445a7290,0 25px 70px #07122275; }
+    .topline { display:flex; justify-content:space-between; gap:1rem; padding:7px 15px; background:#122037; border:1px solid #657b926e; font: .75rem/1.5 var(--mono); letter-spacing:.1em; color:var(--dim); text-transform:uppercase; }
+    .topline span:last-child { color:#b6c5d5; }
+    .masthead { min-height:108px; display:flex; align-items:center; justify-content:space-between; gap:2rem; padding:24px 30px; background:linear-gradient(112deg,#657b95,#788aa1 52%,#667d97); box-shadow:inset 0 1px #adc0d4,inset 0 -1px #1b304b; }
+    .brand { display:flex; align-items:center; gap:15px; width:max-content; }
+    .brand-emblem { width:57px; height:57px; padding:7px; border:2px solid #c0ccda; border-radius:50%; background:linear-gradient(135deg,#92a5ba,#3a506b); box-shadow:inset 0 0 0 3px #334a64,0 0 0 1px #334a64; }
+    .brand-emblem svg { width:100%; height:100%; }
+    .wordmark { font-size:2.05rem; font-weight:900; line-height:1; letter-spacing:-.07em; font-style:italic; text-shadow:0 2px #344d6c; }
+    .wordmark span { color:#d4e1ec; font-weight:400; }
+    .brand-sub { margin-top:8px; font:.75rem/1 var(--mono); letter-spacing:.21em; color:#e0e8f0; }
+    .header-note { font:.75rem/1.65 var(--mono); text-align:right; color:#e3ebf5; letter-spacing:.12em; }
+    .header-note span { display:block; color:#d1deeb; letter-spacing:.04em; }
+    .nav { display:grid; grid-template-columns:1.25fr repeat(4,1fr); margin-top:6px; border:2px solid #122039; box-shadow:0 0 0 1px #8fa2b9; background:var(--metal); }
+    .nav-label { padding:13px 17px; color:#c4d2e2; background:#172a4299; font:.75rem/1.5 var(--mono); letter-spacing:.05em; display:flex; align-items:center; gap:10px; }
+    .nav-label b { border:1px solid #869eb8; width:20px; text-align:center; color:#e4edf7; }
+    .nav a { display:flex; align-items:center; justify-content:center; padding:11px 15px; border-left:2px solid #192a43; box-shadow:inset 1px 0 #8e9fb3; font-size:.875rem; font-weight:700; letter-spacing:.13em; text-shadow:0 2px #1c314c; }
+    .nav a:hover,.nav a[aria-current] { background:#b3cee126; color:#fff; }
+    main { margin-top:10px; }
+    .frame { border:2px solid #112139; box-shadow:0 0 0 1px #8b9db4,inset 0 0 0 1px #677d97; }
+    .hero { position:relative; isolation:isolate; overflow:hidden; display:grid; grid-template-columns:1.05fr 1fr; gap:36px; align-items:center; min-height:485px; padding:51px 41px 45px; background:#132239; }
+    .hero::before { content:''; position:absolute; inset:0; z-index:-2; background:linear-gradient(118deg,transparent 51%,#677c9640 51.2%,#a2b6cb45 52%,#314b6820 55%,transparent 55.2%),linear-gradient(118deg,transparent 68%,#7d92aa39 68.3%,#a7bacb25 69%,#273e5b40 76%,transparent 76.2%),radial-gradient(ellipse at 90% 10%,#506b893d,transparent 70%); }
+    .hero::after { content:''; position:absolute; inset:0; z-index:-1; pointer-events:none; background:repeating-linear-gradient(0deg,#a0b8d006 0 1px,transparent 1px 4px); }
+    .eyebrow { display:flex; align-items:center; gap:10px; margin:0 0 21px; color:var(--ice); font:.75rem/1.5 var(--mono); letter-spacing:.15em; }
+    .slashes { font-size:1.15rem; color:#93b7d3; letter-spacing:-.2em; margin-right:3px; }
+    h1 { font-size:clamp(2.65rem,4.3vw,4.05rem); line-height:1.04; letter-spacing:-.045em; font-weight:900; margin:0 0 23px; text-transform:uppercase; }
+    h1 span { color:#a9c0d8; }
+    .hero-copy > p:not(.eyebrow) { max-width:420px; margin:0 0 27px; color:var(--muted); line-height:1.7; }
+    .actions { display:flex; flex-wrap:wrap; gap:12px; }
+    .button { min-height:47px; padding:10px 22px; display:inline-flex; gap:10px; align-items:center; justify-content:center; font-size:.875rem; font-weight:700; letter-spacing:.03em; border:1px solid #a8bdd1; color:#15263b; background:linear-gradient(#d6e3ed,#b3c6d9 48%,#a4b9ce 49%,#bdd0e2); box-shadow:inset 0 1px #ffffff99,0 3px 0 #09172a,0 0 0 1px #08182b; transition:filter .15s,transform .15s; }
+    .button:hover { filter:brightness(1.13); transform:translateY(-1px); }
+    .button.secondary { background:linear-gradient(#304762,#1e3551); color:#dce6f0; border-color:#6883a3; }
+    .button svg { width:15px; height:15px; }
+    .hero-footnote { display:block; margin-top:19px; color:#a7bbcf; font:.75rem/1.5 var(--mono); }
+    .demo-console { width:100%; min-width:0; position:relative; background:#0d192a; border:1px solid #8c9fb7; box-shadow:0 0 0 4px #17273d,0 0 0 5px #536b85,11px 16px 0 #0a182736,0 22px 42px #06122077; }
+    .console-title { display:flex; justify-content:space-between; align-items:center; gap:10px; padding:11px 14px; border-bottom:2px solid #0c1a2c; box-shadow:inset 0 1px #a2b2c4; background:var(--metal); font:.75rem/1.5 var(--mono); letter-spacing:.07em; }
+    .window-controls { display:flex; gap:5px; }
+    .window-controls i { width:13px; height:13px; border:1px solid #cad6e6a0; box-shadow:inset 1px 1px #203853; }
+    .demo-tabs { display:flex; border-bottom:1px solid #3b516c; }
+    .demo-tabs button { flex:1; font:.875rem/1.5 var(--mono); color:#afc2d5; background:#18283d; padding:10px 9px; border:0; border-right:1px solid #3b516c; border-top:2px solid transparent; }
+    .demo-tabs button:last-child { border-right:0; }
+    .demo-tabs button[aria-selected='true'] { color:#e4f2ff; background:#223951; border-top-color:#b0d9ef; }
+    .demo-tabs button:hover { background:#29435d; }
+    .prompt { padding:16px 17px; border-bottom:1px solid #2d425d; display:flex; gap:10px; align-items:flex-start; background:#17293e; font-size:.875rem; line-height:1.5; }
+    .prompt .prompt-symbol { font-family:var(--mono); color:var(--ice); flex-shrink:0; }
+    .code-label { display:flex; align-items:center; justify-content:space-between; padding:13px 17px 0; color:#849bb4; font:.75rem/1.5 var(--mono); }
+    .code { padding:12px 16px 17px 10px; margin:0; min-height:154px; font:.875rem/1.75 var(--mono); overflow:auto; tab-size:2; }
+    .code-line { display:flex; gap:17px; white-space:pre; }
+    .line-number { flex:0 0 19px; text-align:right; color:#7289a1; user-select:none; }
+    .code-line code { font:inherit; }
+    .token-key { color:#a2cdf0; }
+    .token-string { color:#d4dac4; }
+    .token-fn { color:#e1c69f; }
+    .token-comment { color:#90a8bc; }
+    .console-bottom { display:flex; align-items:center; justify-content:space-between; gap:12px; padding:10px 16px; border-top:1px solid #3c526e; background:#1c3048; }
+    .demo-status { font:.75rem/1.5 var(--mono); color:#c2d7e7; }
+    .run-button { flex-shrink:0; padding:6px 12px; border:1px solid #7894ac; background:linear-gradient(#4a6580,#2e4862); color:#e5eff7; font:.75rem/1.5 var(--mono); }
+    .run-button:hover { background:#597891; }
+    .run-button:disabled { cursor:wait; opacity:.65; }
+    .hero-rail { display:flex; justify-content:space-between; gap:12px; padding:9px 16px; border-top:1px solid #8ca1b7; background:var(--metal); font:.75rem/1.5 var(--mono); letter-spacing:.06em; }
+    .hero-rail span:last-child { color:#d2e0ec; }
+    .tech-strip { padding:16px 26px; margin-top:10px; background:linear-gradient(90deg,#23364e,#30455f,#23364e); display:flex; align-items:center; justify-content:space-between; gap:20px; border:1px solid #61778f; box-shadow:inset 0 1px #8196ad30; }
+    .tech-label { font:.75rem/1.5 var(--mono); color:#a4b9cd; letter-spacing:.09em; }
+    .tech-list { list-style:none; margin:0; padding:0; display:flex; align-items:center; flex-wrap:wrap; gap:clamp(20px,3vw,47px); color:#d3deeb; font-size:.875rem; font-weight:700; }
+    .tech-list span { color:#aec6db; font-family:var(--mono); margin-right:7px; }
+    .features { display:grid; grid-template-columns:repeat(3,1fr); margin-top:11px; background:#1f3048; }
+    .feature { border-right:2px solid #12223a; box-shadow:inset -1px 0 #617990; min-width:0; }
+    .feature:last-child { border-right:0; box-shadow:none; }
+    .panel-heading { margin:0; display:flex; align-items:center; gap:12px; padding:10px 17px; color:#e6edf5; background:var(--metal); border-bottom:2px solid #112038; box-shadow:inset 0 1px #9babc0; font-size:.875rem; font-weight:700; letter-spacing:.12em; }
+    .panel-number { font:.75rem/1.5 var(--mono); color:#d9e7f4; width:21px; border-right:1px solid #91a8c17d; padding-right:7px; }
+    .feature-body { padding:25px 25px 22px; background:linear-gradient(140deg,#3d546817,#07162912); }
+    .feature-icon { width:35px; height:35px; display:flex; align-items:center; justify-content:center; color:#c1d8ed; border:1px solid #6b829b; background:linear-gradient(#415a74,#253d57); box-shadow:inset 0 1px #95adc34d,2px 2px 0 #122339; margin-bottom:16px; }
+    .feature-icon svg { width:21px; height:21px; }
+    h3 { font-size:1.22rem; line-height:1.35; letter-spacing:-.025em; margin:0 0 12px; }
+    .feature p { margin:0; color:var(--muted); font-size:1rem; line-height:1.65; }
+    .feature-tag { display:block; margin-top:24px; padding-top:14px; border-top:1px solid #4d657e; font:.75rem/1.5 var(--mono); letter-spacing:.1em; color:#a6bfd5; }
+    .lower-grid { display:grid; grid-template-columns:2fr 1fr; gap:10px; margin-top:11px; }
+    .workflow,.philosophy { background:#1b2d44; min-width:0; }
+    .workflow-body { display:grid; grid-template-columns:repeat(3,1fr); padding:25px 24px; gap:25px; }
+    .step-num { font:1.25rem/1.5 var(--mono); color:#99b6ce; display:block; margin-bottom:11px; }
+    .workflow h3 { font-size:1rem; letter-spacing:0; }
+    .workflow p { font-size:1rem; color:var(--muted); margin:0; line-height:1.65; }
+    .philosophy-body { padding:27px 26px; }
+    .philosophy h3 { font-size:1.55rem; font-weight:700; }
+    .philosophy p { margin:0; color:var(--muted); }
+    .philosophy small { display:block; font:.75rem/1.5 var(--mono); color:#aac5dc; margin-top:20px; letter-spacing:.06em; }
+    footer { margin-top:11px; padding:18px 17px; background:#14253a; display:flex; align-items:center; justify-content:space-between; gap:16px; border:1px solid #637c98; font:.75rem/1.5 var(--mono); color:#aec0d4; }
+    .footer-brand { color:#dfe8f2; font-weight:bold; letter-spacing:.06em; }
+    footer a { color:#dce8f3; padding:7px 0; }
+    footer a:hover { text-decoration:underline; }
+    .site::selection { background:#b6e1f8; }
+    @media(min-width:1600px) { .hero { min-height:520px; } }
+    @media(max-width:1080px) { .site { width:calc(100% - 40px); margin-top:22px; } .hero { gap:25px; padding:41px 30px; } h1 { font-size:clamp(2.65rem,5vw,3.5rem); } .nav-label { font-size:.7rem; padding-inline:10px; } .feature-body { padding:22px 20px; } .tech-strip { padding-inline:20px; } .tech-list { gap:21px; } .workflow-body { gap:17px; padding-inline:20px; } }
+    @media(max-width:800px) { .hero { grid-template-columns:1fr; gap:35px; padding:35px 27px; } h1 { font-size:clamp(2.65rem,7.5vw,4rem); } .hero-copy > p:not(.eyebrow) { max-width:560px; } .demo-console { max-width:620px; margin-inline:auto; } .hero-footnote { margin-top:16px; } .header-note { display:none; } .nav { grid-template-columns:repeat(4,1fr); } .nav-label { display:none; } .nav a:first-of-type { border-left:0; } .tech-strip { align-items:flex-start; flex-direction:column; gap:10px; } .tech-list { gap:17px 24px; } .features { grid-template-columns:1fr; } .feature { border-right:0; border-bottom:2px solid #0f2035; box-shadow:none; } .feature:last-child { border-bottom:0; } .feature-body { display:grid; grid-template-columns:42px 1fr; gap:0 17px; padding:24px; } .feature-icon { grid-row:1 / span 3; } .feature h3 { margin-top:3px; } .feature-tag { grid-column:2; margin-top:15px; } .lower-grid { grid-template-columns:1fr; } .philosophy-body { padding:25px; } .philosophy h3 { font-size:1.4rem; } }
+    @media(max-width:480px) { .site { width:calc(100% - 20px); padding:5px; margin:12px auto; } .topline { font-size:.75rem; padding:7px 9px; letter-spacing:0; } .topline span:last-child { display:none; } .masthead { min-height:100px; padding:20px 17px; } .brand { gap:12px; } .brand-emblem { width:48px; height:48px; } .wordmark { font-size:1.85rem; } .brand-sub { font-size:.75rem; letter-spacing:.07em; } .nav a { padding:12px 4px; letter-spacing:.02em; font-size:.875rem; } .hero { padding:32px 19px 27px; gap:32px; } h1 { font-size:clamp(2rem,8.9vw,2.55rem); } .eyebrow { letter-spacing:.06em; margin-bottom:18px; } .hero-copy > p:not(.eyebrow) { margin-bottom:23px; } .actions { gap:9px; } .button { padding-inline:14px; } .console-title { padding:10px; letter-spacing:0; } .window-controls { display:none; } .prompt { padding:13px 11px; } .code { font-size:.8rem; padding-inline:6px; } .code-line { gap:10px; } .code-label { padding-inline:11px; } .console-bottom { padding:10px; gap:7px; } .run-button { padding:7px 9px; } .hero-rail { padding:8px 10px; letter-spacing:0; } .hero-rail span:last-child { display:none; } .tech-strip { padding:17px; } .tech-list { gap:12px 20px; } .feature-body { padding:21px 19px; } .workflow-body { grid-template-columns:1fr; gap:22px; padding:23px; } .step { display:grid; grid-template-columns:38px 1fr; gap:0 12px; } .step-num { grid-row:1 / span 2; margin:0; } .workflow h3 { margin-top:3px; margin-bottom:7px; } footer { padding:17px 12px; flex-wrap:wrap; gap:8px 16px; } footer .copyright { order:3; flex-basis:100%; } }
+    @media(prefers-reduced-motion:reduce) { html { scroll-behavior:auto; } .button { transition:none; } }
+  </style>
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+  <div class="site" id="top">
+    <div class="topline"><span>RoboDev / AI Development Systems</span><span>Human ideas. Machine momentum.</span></div>
+    <header>
+      <div class="masthead">
+        <a class="brand" href="#top" aria-label="RoboDev home">
+          <span class="brand-emblem" aria-hidden="true"><svg viewBox="0 0 40 40" fill="none" stroke="#e3edf5" stroke-width="2.5"><path d="M14 11 6 20l8 9m12-18 8 9-8 9m-4-23-4 26"/></svg></span>
+          <div><div class="wordmark">ROBO<span>DEV</span></div><div class="brand-sub">AI DEVELOPMENT SYSTEMS</div></div>
+        </a>
+        <div class="header-note">BUILT FOR WHAT’S NEXT.<span>Less friction. More creation.</span></div>
+      </div>
+      <nav class="nav" aria-label="Main navigation">
+        <div class="nav-label"><b>R</b> YOUR DEVELOPMENT CO-PILOT</div>
+        <a href="#product" aria-current="page">PRODUCT</a><a href="#features">FEATURES</a><a href="#workflow">WORKFLOW</a><a href="#demo">LIVE DEMO</a>
+      </nav>
+    </header>
+    <main id="main">
+      <section class="frame" id="product" aria-labelledby="hero-heading">
+        <div class="hero">
+          <div class="hero-copy">
+            <p class="eyebrow"><span class="slashes" aria-hidden="true">///</span> AI ENGINE. HUMAN DIRECTION.</p>
+            <h1 id="hero-heading">Your ideas.<br>Your code.<br><span>Supercharged.</span></h1>
+            <p>Meet your new coding co-pilot. Turn ideas into working code, untangle bugs and spend more time building what matters.</p>
+            <div class="actions">
+              <a href="#demo" class="button" id="try-demo"><svg aria-hidden="true" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="m5 3 7 5-7 5V3Z"/></svg>Try the demo</a>
+              <a href="#features" class="button secondary">Explore RoboDev</a>
+            </div>
+            <small class="hero-footnote">YOUR NEXT BUILD STARTS HERE.</small>
+          </div>
+          <section class="demo-console" id="demo" aria-labelledby="demo-title">
+            <div class="console-title"><span id="demo-title">ROBODEV / INTERACTIVE DEMO</span><span class="window-controls" aria-hidden="true"><i></i><i></i><i></i></span></div>
+            <div class="demo-tabs" role="tablist" aria-label="Choose a coding example">
+              <button type="button" role="tab" id="tab-generate" aria-controls="demo-panel" aria-selected="true" data-example="generate">Generate</button>
+              <button type="button" role="tab" id="tab-refactor" aria-controls="demo-panel" aria-selected="false" tabindex="-1" data-example="refactor">Refactor</button>
+              <button type="button" role="tab" id="tab-debug" aria-controls="demo-panel" aria-selected="false" tabindex="-1" data-example="debug">Debug</button>
+            </div>
+            <div id="demo-panel" role="tabpanel" aria-labelledby="tab-generate" tabindex="0">
+              <div class="prompt"><span class="prompt-symbol" aria-hidden="true">&gt;_</span><span id="demo-prompt">“Build a function that greets a developer.”</span></div>
+              <div class="code-label"><span id="demo-file">greet.ts</span><span>TypeScript</span></div>
+              <div class="code" id="demo-code" aria-label="Example TypeScript code">
+                <div class="code-line"><span class="line-number" aria-hidden="true">01</span><code><span class="token-key">export function</span> <span class="token-fn">greet</span>(name: <span class="token-key">string</span>) {</code></div>
+                <div class="code-line"><span class="line-number" aria-hidden="true">02</span><code>  <span class="token-key">return</span> <span class="token-string">`Hello, ${name}. Let's build.`</span>;</code></div>
+                <div class="code-line"><span class="line-number" aria-hidden="true">03</span><code>}</code></div>
+                <div class="code-line"><span class="line-number" aria-hidden="true">04</span><code> </code></div>
+                <div class="code-line"><span class="line-number" aria-hidden="true">05</span><code><span class="token-comment">// Your idea. Ready to run.</span></code></div>
+              </div>
+            </div>
+            <div class="console-bottom"><span class="demo-status" id="demo-status" role="status" aria-live="polite">Example ready</span><button type="button" class="run-button" id="run-demo">Run example</button></div>
+          </section>
+        </div>
+        <div class="hero-rail"><span>01 / MEET YOUR NEW BUILD PARTNER</span><span>MORE BUILDING. LESS BUSYWORK.</span></div>
+      </section>
+      <div class="tech-strip" aria-label="Developer ecosystem">
+        <span class="tech-label">A HOME IN YOUR STACK</span>
+        <ul class="tech-list"><li><span aria-hidden="true">JS</span>JavaScript</li><li><span aria-hidden="true">TS</span>TypeScript</li><li><span aria-hidden="true">{ }</span>Python</li><li><span aria-hidden="true">&lt;/&gt;</span>HTML &amp; CSS</li></ul>
+      </div>
+      <section class="features frame" id="features" aria-label="RoboDev features">
+        <article class="feature">
+          <h2 class="panel-heading"><span class="panel-number">01</span>GENERATE</h2>
+          <div class="feature-body">
+            <span class="feature-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="m8 6-6 6 6 6m8-12 6 6-6 6m-3-16-2 20"/></svg></span>
+            <h3>Big idea. First line.</h3>
+            <p>Describe what you want to build. Get a clear starting point, from a single function to your next feature.</p>
+            <span class="feature-tag">LESS BLANK PAGE. MORE POSSIBILITY.</span>
+          </div>
+        </article>
+        <article class="feature">
+          <h2 class="panel-heading"><span class="panel-number">02</span>REFACTOR</h2>
+          <div class="feature-body">
+            <span class="feature-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 7h15m-4-4 4 4-4 4M20 17H5m4-4-4 4 4 4"/></svg></span>
+            <h3>Make good code better.</h3>
+            <p>Untangle complex logic, simplify repetition and make your code easier for the next developer to understand.</p>
+            <span class="feature-tag">CLEANER LOGIC. CLEARER INTENT.</span>
+          </div>
+        </article>
+        <article class="feature">
+          <h2 class="panel-heading"><span class="panel-number">03</span>DEBUG</h2>
+          <div class="feature-body">
+            <span class="feature-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="10" cy="10" r="6"/><path d="m14.5 14.5 6 6M10 7v4m0 2v1"/></svg></span>
+            <h3>Find the why. Fix the what.</h3>
+            <p>Bring the error and the context. Understand what went wrong and get a fix you can actually follow.</p>
+            <span class="feature-tag">FEWER DEAD ENDS. MORE ANSWERS.</span>
+          </div>
+        </article>
+      </section>
+      <div class="lower-grid">
+        <section class="workflow frame" id="workflow" aria-labelledby="workflow-heading">
+          <h2 class="panel-heading" id="workflow-heading"><span class="panel-number">04</span>FROM IDEA TO IMPLEMENTATION</h2>
+          <div class="workflow-body">
+            <div class="step"><span class="step-num">01.</span><h3>Set the direction.</h3><p>Share your goal, your stack and the code you’re working with.</p></div>
+            <div class="step"><span class="step-num">02.</span><h3>Build together.</h3><p>Explore suggestions, ask questions and refine the result.</p></div>
+            <div class="step"><span class="step-num">03.</span><h3>Make it yours.</h3><p>Review, test and ship. You stay in control of every change.</p></div>
+          </div>
+        </section>
+        <aside class="philosophy frame" aria-labelledby="philosophy-heading">
+          <h2 class="panel-heading" id="philosophy-heading"><span class="panel-number">05</span>THE ROBODEV WAY</h2>
+          <div class="philosophy-body"><h3>You’re the developer.<br>We’re the momentum.</h3><p>A little less friction between the idea in your head and the code on your screen.</p><small>HUMAN CREATIVITY / MACHINE ASSISTANCE</small></div>
+        </aside>
+      </div>
+    </main>
+    <footer><span class="footer-brand">ROBODEV / BUILT FOR BUILDERS.</span><span class="copyright">© <span id="year">2026</span> RoboDev</span><a href="#top">Back to top</a></footer>
+  </div>
+  <script>
+    (() => {
+      const examples = {
+        generate: {
+          prompt: '“Build a function that greets a developer.”', file: 'greet.ts',
+          lines: [
+            [['key','export function '],['fn','greet'],['','(name: '],['key','string'],['',') {']],
+            [['','  '],['key','return '],['string',"`Hello, ${name}. Let's build.`"],['',';']],
+            [['','}']], [['',' ']], [['comment','// Your idea. Ready to run.']]
+          ],
+          run: () => {
+            const greet = name => `Hello, ${name}. Let's build.`;
+            return greet('developer');
+          }
+        },
+        refactor: {
+          prompt: '“Simplify this loop that doubles every number.”', file: 'double.ts',
+          lines: [
+            [['comment','// A loop, made simpler.']],
+            [['key','export const '],['fn','double'],['',' = (nums: '],['key','number'],['','[]) =>']],
+            [['','  nums.'],['fn','map'],['','(num => num * 2);']],
+            [['',' ']], [['comment','// Same result. Clearer intent.']]
+          ],
+          run: () => {
+            const double = nums => nums.map(num => num * 2);
+            return 'double([1, 2, 3]) → [' + double([1, 2, 3]).join(', ') + ']';
+          }
+        },
+        debug: {
+          prompt: '“Stop this function crashing on a missing name.”', file: 'welcome.ts',
+          lines: [
+            [['key','export function '],['fn','welcome'],['','(name?: '],['key','string'],['',') {']],
+            [['','  '],['key','const '],['','safeName = name?.'],['fn','trim'],['','() || '],['string',"'developer'"],['',';']],
+            [['','  '],['key','return '],['string','`Welcome, ${safeName}!`'],['',';']],
+            [['','}']], [['comment','// Missing name? A useful fallback.']]
+          ],
+          run: () => {
+            const welcome = name => {
+              const safeName = name?.trim() || 'developer';
+              return `Welcome, ${safeName}!`;
+            };
+            return 'welcome(undefined) → ' + welcome(undefined);
+          }
+        }
+      };
+      const tabs = [...document.querySelectorAll('[role="tab"]')];
+      const code = document.getElementById('demo-code');
+      const status = document.getElementById('demo-status');
+      const run = document.getElementById('run-demo');
+      let current = 'generate';
+      let runTimer;
+      function showExample(key) {
+        current = key;
+        clearTimeout(runTimer);
+        run.disabled = false;
+        run.textContent = 'Run example';
+        const example = examples[key];
+        tabs.forEach(tab => {
+          const active = tab.dataset.example === key;
+          tab.setAttribute('aria-selected', String(active));
+          tab.tabIndex = active ? 0 : -1;
+        });
+        document.getElementById('demo-panel').setAttribute('aria-labelledby', 'tab-' + key);
+        document.getElementById('demo-prompt').textContent = example.prompt;
+        document.getElementById('demo-file').textContent = example.file;
+        code.replaceChildren(...example.lines.map((tokens, index) => {
+          const line = document.createElement('div');
+          line.className = 'code-line';
+          const number = document.createElement('span');
+          number.className = 'line-number';
+          number.setAttribute('aria-hidden', 'true');
+          number.textContent = String(index + 1).padStart(2, '0');
+          const content = document.createElement('code');
+          tokens.forEach(([type, value]) => {
+            const token = document.createElement('span');
+            if (type) token.className = 'token-' + type;
+            token.textContent = value;
+            content.append(token);
+          });
+          line.append(number, content);
+          return line;
+        }));
+        status.textContent = 'Example ready';
+      }
+      tabs.forEach((tab, index) => {
+        tab.addEventListener('click', () => showExample(tab.dataset.example));
+        tab.addEventListener('keydown', event => {
+          let target;
+          if (event.key === 'ArrowRight') target = (index + 1) % tabs.length;
+          if (event.key === 'ArrowLeft') target = (index - 1 + tabs.length) % tabs.length;
+          if (event.key === 'Home') target = 0;
+          if (event.key === 'End') target = tabs.length - 1;
+          if (target === undefined) return;
+          event.preventDefault();
+          tabs[target].focus();
+          showExample(tabs[target].dataset.example);
+        });
+      });
+      run.addEventListener('click', () => {
+        run.disabled = true;
+        run.textContent = 'Running…';
+        status.textContent = 'Running local example…';
+        runTimer = setTimeout(() => {
+          status.textContent = examples[current].run();
+          run.disabled = false;
+          run.textContent = 'Run again';
+        }, 400);
+      });
+      document.getElementById('try-demo').addEventListener('click', () => {
+        const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        setTimeout(() => tabs.find(tab => tab.dataset.example === current).focus({preventScroll:true}), reducedMotion ? 0 : 450);
+      });
+      document.getElementById('year').textContent = new Date().getFullYear();
+    })();
+  </script>
+</body>
+</html>
