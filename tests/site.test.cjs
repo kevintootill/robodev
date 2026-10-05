@@ -11,7 +11,7 @@ for(const page of pages) test(`${page}: internal links, IDs and SEO`,()=>{
   for(const [,href] of html.matchAll(/\bhref="([^"]+)"/g)){
     if(/^(https?:|mailto:)/.test(href))continue;
     const [file,anchor]=href.split('#');
-    const target=file?path.join(root,file):path.join(root,page+'.html');
+    const target=file?path.join(root,file.split('?')[0]):path.join(root,page+'.html');
     assert.ok(fs.existsSync(target),`Missing link: ${href}`);
     if(anchor)assert.ok(fs.readFileSync(target,'utf8').includes(`id="${anchor}"`),`Missing anchor: ${href}`);
   }

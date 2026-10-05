@@ -83,7 +83,7 @@ jobs:
             if [ -z "$expected" ]; then expected=index.html; fi
             matched=false
             for attempt in 1 2 3 4 5; do
-              if curl --fail --silent --show-error --max-time 20 --resolve "robodev.online:443:$SG_ORIGIN_IP" -H 'Cache-Control: no-cache' "https://robodev.online$path" -o /tmp/deployed-page.html && cmp -s "$expected" /tmp/deployed-page.html; then
+              if curl --fail --silent --show-error --max-time 20 --resolve "robodev.online:443:$SG_ORIGIN_IP" -H 'Cache-Control: no-cache' "https://robodev.online$path?deploy=$GITHUB_SHA" -o /tmp/deployed-page.html && cmp -s "$expected" /tmp/deployed-page.html; then
                 matched=true
                 break
               fi
