@@ -22,6 +22,7 @@ only the public website files. If uploading the ZIP, extract it in `public_html`
 - SiteGround origin IP at setup: `35.214.43.162` (check Site Tools before reuse).
 - Install a free Let's Encrypt certificate under Security > SSL Manager, then
   enable Security > HTTPS Enforce once the certificate is active.
+- NGINX Direct Delivery is disabled so Apache applies the cache and redirect rules.
 - `.htaccess` selects `index.html`, disables directory listing, and redirects HTTP
   and `www` requests to the canonical HTTPS domain. Keep the SSL certificate active.
 
@@ -49,7 +50,7 @@ GA4 property: **RoboDev (robodev.online)** in the Kevin Tootill Analytics accoun
 Property ID: `557378343`.
 Web stream: **RoboDev website**, stream ID `16044367053`, measurement ID
 `G-9TM5P8R1MW`. The site loads the Google tag only after analytics consent;
-advertising consent stays denied. Demo events: `demo_open`, `demo_select`, `demo_run`.
+advertising consent stays denied. The interactive demo and its tracking events have been removed.
 
 The site includes canonical URLs, Open Graph and Twitter metadata, WebSite
 structured data, `robots.txt`, and `sitemap.xml`.

@@ -41,7 +41,7 @@
   const banner = document.createElement('section');
   banner.id = 'cookie-banner';
   banner.setAttribute('aria-label', 'Analytics cookie preferences');
-  banner.innerHTML = '<p>May we use Google Analytics to understand visits and demo usage? Analytics stays off until you accept. <a href="/privacy.html">Privacy details</a></p><button type="button" data-consent="accepted">Accept analytics</button><button type="button" data-consent="rejected">Reject analytics</button>';
+  banner.innerHTML = '<p>May we use Google Analytics to understand website visits? Analytics stays off until you accept. <a href="/privacy.html">Privacy details</a></p><button type="button" data-consent="accepted">Accept analytics</button><button type="button" data-consent="rejected">Reject analytics</button>';
   banner.hidden = consent === 'accepted' || consent === 'rejected';
   document.body.appendChild(banner);
   banner.addEventListener('click', event => {
@@ -65,12 +65,4 @@
     banner.querySelector('button').focus();
   });
   if (consent === 'accepted') startAnalytics();
-  document.addEventListener('click', event => {
-    if (consent !== 'accepted') return;
-    const target = event.target.closest('#try-demo, #run-demo, [data-example]');
-    if (!target) return;
-    const name = target.id === 'run-demo' ? 'demo_run' : target.id === 'try-demo' ? 'demo_open' : 'demo_select';
-    const example = target.dataset.example || document.querySelector('[data-example][aria-selected="true"]')?.dataset.example;
-    window.gtag('event', name, { example: example || 'generate' });
-  });
 })();
