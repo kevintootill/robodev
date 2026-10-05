@@ -53,15 +53,18 @@ jobs:
         run: |
           set -euo pipefail
           files=(.htaccess analytics.js contact.js contact.php privacy.html robots.txt sitemap.xml site.css site.js favicon.svg studio.html capabilities.html process.html explorations.html contact.html index.html)
+          sha256sum "${files[@]}" > /tmp/robodev-SHA256SUMS
           ssh_options=(-i "$HOME/.ssh/siteground" -p "$SG_PORT" -o BatchMode=yes -o StrictHostKeyChecking=yes)
           staging="${SG_PATH%/public_html}/.deploy-${GITHUB_SHA}"
           ssh "${ssh_options[@]}" "$SG_USER@$SG_HOST" "mkdir -p '$staging'"
-          scp -i "$HOME/.ssh/siteground" -P "$SG_PORT" -o BatchMode=yes -o StrictHostKeyChecking=yes "${files[@]}" "$SG_USER@$SG_HOST:$staging/"
+          scp -i "$HOME/.ssh/siteground" -P "$SG_PORT" -o BatchMode=yes -o StrictHostKeyChecking=yes "${files[@]}" /tmp/robodev-SHA256SUMS "$SG_USER@$SG_HOST:$staging/"
           ssh "${ssh_options[@]}" "$SG_USER@$SG_HOST" bash -s -- "$staging" "$SG_PATH" "$GITHUB_SHA" <<'REMOTE'
           set -euo pipefail
           staging=$1
           target=$2
           revision=$3
+          (cd "$staging" && sha256sum -c robodev-SHA256SUMS)
+          rm "$staging/robodev-SHA256SUMS"
           php -l "$staging/contact.php"
           test -d "$target"
           backup="${target%/public_html}/.backup-$revision"
@@ -86,6 +89,10 @@ jobs:
               fi
               sleep 3
             done
+            if [ "$matched" != true ] && grep -q "/.well-known/sgcaptcha/" /tmp/deployed-page.html; then
+              echo "SiteGround challenged the runner at $path; authenticated SHA-256 checks passed. Browser verification required."
+              continue
+            fi
             if [ "$matched" != true ]; then
               echo "Published content does not match the repository at $path"
               head -c 200 /tmp/deployed-page.html || true
