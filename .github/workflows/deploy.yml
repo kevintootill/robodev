@@ -1,0 +1,78 @@
+name: Deploy to SiteGround
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: siteground-production
+  cancel-in-progress: false
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    environment:
+      name: production
+      url: https://robodev.online
+    env:
+      SG_HOST: ${{ vars.SITEGROUND_HOST }}
+      SG_USER: ${{ vars.SITEGROUND_USER }}
+      SG_PATH: ${{ vars.SITEGROUND_PATH }}
+      SG_PORT: '18765'
+      SG_ORIGIN_IP: ${{ vars.SITEGROUND_ORIGIN_IP }}
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - name: Validate website
+        run: |
+          node --check analytics.js
+          node --check contact.js
+          node --test tests/analytics.test.cjs
+          php -l contact.php
+      - name: Configure deployment SSH
+        env:
+          SSH_KEY: ${{ secrets.SITEGROUND_SSH_KEY }}
+          KNOWN_HOSTS: ${{ secrets.SITEGROUND_KNOWN_HOSTS }}
+        run: |
+          set -euo pipefail
+          for value in SG_HOST SG_USER SG_PATH SG_ORIGIN_IP SSH_KEY KNOWN_HOSTS; do
+            test -n "${!value}" || { echo "Missing deployment setting: $value"; exit 1; }
+          done
+          [[ "$SG_HOST" =~ ^[a-zA-Z0-9.-]+$ ]]
+          [[ "$SG_ORIGIN_IP" =~ ^[0-9.]+$ ]]
+          [[ "$SG_USER" =~ ^[a-zA-Z0-9_-]+$ ]]
+          [[ "$SG_PATH" =~ ^/[a-zA-Z0-9_./-]+/robodev.online/public_html$ ]]
+          install -d -m 700 ~/.ssh
+          printf '%s\n' "$SSH_KEY" > ~/.ssh/siteground
+          printf '%s\n' "$KNOWN_HOSTS" > ~/.ssh/known_hosts
+          chmod 600 ~/.ssh/siteground ~/.ssh/known_hosts
+      - name: Upload and publish website
+        run: |
+          set -euo pipefail
+          files=(index.html .htaccess analytics.js contact.js contact.php privacy.html robots.txt sitemap.xml)
+          ssh_options=(-i "$HOME/.ssh/siteground" -p "$SG_PORT" -o BatchMode=yes -o StrictHostKeyChecking=yes)
+          staging="${SG_PATH%/public_html}/.deploy-${GITHUB_SHA}"
+          ssh "${ssh_options[@]}" "$SG_USER@$SG_HOST" "mkdir -p '$staging'"
+          scp -i "$HOME/.ssh/siteground" -P "$SG_PORT" -o BatchMode=yes -o StrictHostKeyChecking=yes "${files[@]}" "$SG_USER@$SG_HOST:$staging/"
+          ssh "${ssh_options[@]}" "$SG_USER@$SG_HOST" bash -s -- "$staging" "$SG_PATH" "$GITHUB_SHA" <<'REMOTE'
+          set -euo pipefail
+          staging=$1
+          target=$2
+          revision=$3
+          php -l "$staging/contact.php"
+          test -d "$target"
+          backup="${target%/public_html}/.backup-$revision"
+          mkdir -p "$backup"
+          for file in .htaccess analytics.js contact.js contact.php privacy.html robots.txt sitemap.xml index.html; do
+            if [ -f "$target/$file" ]; then cp -p "$target/$file" "$backup/$file"; fi
+            mv "$staging/$file" "$target/$file"
+          done
+          rmdir "$staging"
+          REMOTE
+      - name: Verify SiteGround origin
+        run: |
+          curl --fail --location --silent --show-error --max-time 30 --resolve "robodev.online:80:$SG_ORIGIN_IP" --resolve "robodev.online:443:$SG_ORIGIN_IP" http://robodev.online/index.html -o /tmp/deployed-index.html
+          cmp index.html /tmp/deployed-index.html
+      - name: Remove runner SSH key
+        if: always()
+        run: rm -f ~/.ssh/siteground

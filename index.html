@@ -1,11 +1,27 @@
 <!doctype html>
-<html lang="en">
+<html lang="en-GB">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#17263b">
   <meta name="description" content="Meet RoboDev, your AI coding co-pilot. Turn ideas into code, untangle bugs and keep your next build moving.">
-  <title>RoboDev — Built for what's next.</title>
+  <title>RoboDev | AI Coding Co-pilot — Generate, Refactor &amp; Debug</title>
+  <link rel="canonical" href="https://robodev.online/">
+  <meta name="robots" content="index, follow, max-image-preview:large">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="RoboDev">
+  <meta property="og:locale" content="en_GB">
+  <meta property="og:url" content="https://robodev.online/">
+  <meta property="og:title" content="RoboDev | Your AI Coding Co-pilot">
+  <meta property="og:description" content="Turn ideas into working code, simplify complex logic and understand bugs. Explore RoboDev's interactive coding demo.">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="RoboDev | Your AI Coding Co-pilot">
+  <meta name="twitter:description" content="Generate, refactor and debug. Turn your next idea into code with RoboDev.">
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"WebSite","@id":"https://robodev.online/#website","url":"https://robodev.online/","name":"RoboDev","description":"AI coding co-pilot with an interactive demo for generating, refactoring and debugging code.","inLanguage":"en-GB"}
+  </script>
+  <script src="/analytics.js" defer></script>
+  <script src="/contact.js" defer></script>
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='3' fill='%2317263b'/%3E%3Cpath d='M7 9h9a5 5 0 0 1 0 10H7zm9 10 8 8M7 9v18' fill='none' stroke='%23b7dcf2' stroke-width='3'/%3E%3C/svg%3E">
   <style>
     :root { color-scheme: dark; --ink:#e7edf5; --muted:#b6c5d5; --dim:#91a6bf; --navy:#17263b; --dark:#101d30; --ice:#b6e1f8; --line:#657b95; --metal:linear-gradient(180deg,#8495a9 0%,#596d84 10%,#4f637b 45%,#354b65 49%,#405671 92%,#73879e 100%); --mono:'Courier New',monospace; }
@@ -217,8 +233,23 @@
           <div class="philosophy-body"><h3>You’re the developer.<br>We’re the momentum.</h3><p>A little less friction between the idea in your head and the code on your screen.</p><small>HUMAN CREATIVITY / MACHINE ASSISTANCE</small></div>
         </aside>
       </div>
+      <section class="frame" id="contact" aria-labelledby="contact-heading" style="margin-top:24px;padding:28px;background:#132239">
+        <h2 id="contact-heading">Let's talk about your next build.</h2>
+        <p>Send a question or tell us what you're working on.</p>
+        <form id="contact-form" action="/contact.php" method="post">
+          <p><label for="contact-name">Name</label><br><input id="contact-name" name="name" autocomplete="name" maxlength="100" required></p>
+          <p><label for="contact-email">Email</label><br><input id="contact-email" name="email" type="email" autocomplete="email" maxlength="254" required></p>
+          <p><label for="contact-message">Message</label><br><textarea id="contact-message" name="message" rows="6" minlength="10" maxlength="5000" required></textarea></p>
+          <div style="position:absolute;left:-10000px" aria-hidden="true"><label for="contact-website">Leave this field empty</label><input id="contact-website" name="website" tabindex="-1" autocomplete="off"></div>
+          <input type="hidden" name="csrf" id="contact-csrf">
+          <p>Your details are used to reply to your enquiry. <a href="/privacy.html" style="text-decoration:underline">Privacy details</a>.</p>
+          <button class="button" type="submit" id="contact-submit" disabled>Send message</button>
+          <p id="contact-status" role="status" aria-live="polite">Loading contact form…</p>
+          <noscript><p>Please enable JavaScript to submit this form, or email <a href="mailto:kevintootill@hotmail.com">kevintootill@hotmail.com</a>.</p></noscript>
+        </form>
+      </section>
     </main>
-    <footer><span class="footer-brand">ROBODEV / BUILT FOR BUILDERS.</span><span class="copyright">© <span id="year">2026</span> RoboDev</span><a href="#top">Back to top</a></footer>
+    <footer><span class="footer-brand">ROBODEV / BUILT FOR BUILDERS.</span><span class="copyright">© <span id="year">2026</span> RoboDev</span><a href="/privacy.html">Privacy</a><button type="button" id="cookie-settings">Cookie settings</button><a href="#top">Back to top</a></footer>
   </div>
   <script>
     (() => {
