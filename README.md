@@ -22,7 +22,8 @@ only the public website files. If uploading the ZIP, extract it in `public_html`
 - SiteGround origin IP at setup: `35.214.43.162` (check Site Tools before reuse).
 - Install a free Let's Encrypt certificate under Security > SSL Manager, then
   enable Security > HTTPS Enforce once the certificate is active.
-- `.htaccess` selects `index.html` as the default page and disables directory listing.
+- `.htaccess` selects `index.html`, disables directory listing, and redirects HTTP
+  and `www` requests to the canonical HTTPS domain. Keep the SSL certificate active.
 
 GitHub Pages is retired. The former `CNAME` and `.nojekyll` files are removed.
 DNS and SSL are managed through SiteGround; domain registration remains at Namecheap.
@@ -45,6 +46,7 @@ periodically in SiteGround; they are named `.backup-<commit>` beside `public_htm
 ## Analytics, SEO and contact
 
 GA4 property: **RoboDev (robodev.online)** in the Kevin Tootill Analytics account.
+Property ID: `557378343`.
 Web stream: **RoboDev website**, stream ID `16044367053`, measurement ID
 `G-9TM5P8R1MW`. The site loads the Google tag only after analytics consent;
 advertising consent stays denied. Demo events: `demo_open`, `demo_select`, `demo_run`.

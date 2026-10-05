@@ -48,7 +48,10 @@
     .brand-sub { margin-top:8px; font:.75rem/1 var(--mono); letter-spacing:.21em; color:#e0e8f0; }
     .header-note { font:.75rem/1.65 var(--mono); text-align:right; color:#e3ebf5; letter-spacing:.12em; }
     .header-note span { display:block; color:#d1deeb; letter-spacing:.04em; }
-    .nav { display:grid; grid-template-columns:1.25fr repeat(4,1fr); margin-top:6px; border:2px solid #122039; box-shadow:0 0 0 1px #8fa2b9; background:var(--metal); }
+    .nav { display:grid; grid-template-columns:1.25fr repeat(5,1fr); margin-top:6px; border:2px solid #122039; box-shadow:0 0 0 1px #8fa2b9; background:var(--metal); }
+    #contact input:not([type="hidden"]),#contact textarea { width:100%;max-width:650px;padding:12px;background:#17263b;color:var(--ink);border:1px solid #91a6bf;border-radius:3px;font:inherit; }
+    #contact a { text-decoration:underline; }
+    #contact button:disabled { opacity:.6;cursor:wait; }
     .nav-label { padding:13px 17px; color:#c4d2e2; background:#172a4299; font:.75rem/1.5 var(--mono); letter-spacing:.05em; display:flex; align-items:center; gap:10px; }
     .nav-label b { border:1px solid #869eb8; width:20px; text-align:center; color:#e4edf7; }
     .nav a { display:flex; align-items:center; justify-content:center; padding:11px 15px; border-left:2px solid #192a43; box-shadow:inset 1px 0 #8e9fb3; font-size:.875rem; font-weight:700; letter-spacing:.13em; text-shadow:0 2px #1c314c; }
@@ -147,7 +150,7 @@
       </div>
       <nav class="nav" aria-label="Main navigation">
         <div class="nav-label"><b>R</b> YOUR DEVELOPMENT CO-PILOT</div>
-        <a href="#product" aria-current="page">PRODUCT</a><a href="#features">FEATURES</a><a href="#workflow">WORKFLOW</a><a href="#demo">LIVE DEMO</a>
+        <a href="#product" aria-current="page">PRODUCT</a><a href="#features">FEATURES</a><a href="#workflow">WORKFLOW</a><a href="#demo">LIVE DEMO</a><a href="#contact">CONTACT</a>
       </nav>
     </header>
     <main id="main">
