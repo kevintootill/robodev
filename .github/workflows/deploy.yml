@@ -73,6 +73,8 @@ jobs:
         run: |
           curl --fail --location --silent --show-error --max-time 30 --resolve "robodev.online:80:$SG_ORIGIN_IP" --resolve "robodev.online:443:$SG_ORIGIN_IP" http://robodev.online/index.html -o /tmp/deployed-index.html
           cmp index.html /tmp/deployed-index.html
+          curl --fail --location --silent --show-error --max-time 30 --resolve "robodev.online:80:$SG_ORIGIN_IP" --resolve "robodev.online:443:$SG_ORIGIN_IP" http://robodev.online/ -o /tmp/deployed-root.html
+          cmp index.html /tmp/deployed-root.html
       - name: Remove runner SSH key
         if: always()
         run: rm -f ~/.ssh/siteground
