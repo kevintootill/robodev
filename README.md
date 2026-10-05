@@ -2,12 +2,22 @@
 
 Website for https://robodev.online, hosted on SiteGround. GitHub stores the source.
 
-The site is in `index.html`. No build step or server runtime is required.
+Seven static pages share `site.css` and `site.js`. Edit `tools/build-site.mjs` and run
+`node tools/build-site.mjs` to regenerate the pages and sitemap. Privacy copy is in
+`tools/privacy-content.html`. SiteGround PHP handles contact submissions.
+
+The main pages are Overview, Studio, Capabilities, Process, Explorations and Contact.
+Motion includes rotating geometry, scanning panels, pointer parallax and page transitions.
+Visitors can pause motion, choose an accent palette and change the exploration composition
+and pace. Device reduced-motion preferences are respected.
+
+Run `node tools/preview.mjs` for a local preview at http://127.0.0.1:4178.
+The local preview does not send contact messages.
 
 ## Deployment
 
 In SiteGround Site Tools for `robodev.online`, open Site > File Manager and upload
-`index.html` and `.htaccess` into `robodev.online/public_html/`. Overwrite these
+the files from the packaged ZIP into `robodev.online/public_html/`. Overwrite these
 files when publishing an update. Do not upload the repository or its `.git` folder.
 The GitHub Actions workflow `.github/workflows/deploy.yml` deploys on pushes to
 `main` and can also be started manually. It requires the settings below.
@@ -38,7 +48,7 @@ Configure secrets `SITEGROUND_SSH_KEY` (dedicated private deployment key) and
 Import the matching public deployment key in Site Tools > Devs > SSH Keys Manager.
 Keep all private keys outside the repository.
 
-The workflow validates JavaScript and PHP, uploads only the eight public files,
+The workflow validates JavaScript and PHP, uploads only the sixteen public files,
 checks PHP on the server, backs up replaced files outside `public_html`, and
 publishes the homepage last. It does not upload source-control or test files.
 SSH host verification is mandatory. Deployment backups must be cleaned up
@@ -62,6 +72,5 @@ A successful response means the hosting mail service accepted the message;
 inbox delivery still depends on mail authentication and spam filtering.
 Verify SiteGround SPF/DKIM and test receipt after DNS propagation.
 
-Local checks: `node --test tests/analytics.test.cjs`, `node --check contact.js`,
+Local checks: `node --test tests/*.test.cjs`, `node --check site.js`, `node --check contact.js`,
 and `php -l contact.php` when PHP is available. `./package-site.ps1` builds a ZIP.
-

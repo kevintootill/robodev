@@ -27,6 +27,9 @@ jobs:
         run: |
           node --check analytics.js
           node --check contact.js
+          node --check site.js
+          node tools/build-site.mjs
+          node --test tests/site.test.cjs
           node --test tests/analytics.test.cjs
           php -l contact.php
       - name: Configure deployment SSH
@@ -49,7 +52,7 @@ jobs:
       - name: Upload and publish website
         run: |
           set -euo pipefail
-          files=(index.html .htaccess analytics.js contact.js contact.php privacy.html robots.txt sitemap.xml)
+          files=(.htaccess analytics.js contact.js contact.php privacy.html robots.txt sitemap.xml site.css site.js favicon.svg studio.html capabilities.html process.html explorations.html contact.html index.html)
           ssh_options=(-i "$HOME/.ssh/siteground" -p "$SG_PORT" -o BatchMode=yes -o StrictHostKeyChecking=yes)
           staging="${SG_PATH%/public_html}/.deploy-${GITHUB_SHA}"
           ssh "${ssh_options[@]}" "$SG_USER@$SG_HOST" "mkdir -p '$staging'"
@@ -63,7 +66,7 @@ jobs:
           test -d "$target"
           backup="${target%/public_html}/.backup-$revision"
           mkdir -p "$backup"
-          for file in .htaccess analytics.js contact.js contact.php privacy.html robots.txt sitemap.xml index.html; do
+          for file in .htaccess analytics.js contact.js contact.php privacy.html robots.txt sitemap.xml site.css site.js favicon.svg studio.html capabilities.html process.html explorations.html contact.html index.html; do
             if [ -f "$target/$file" ]; then cp -p "$target/$file" "$backup/$file"; fi
             mv "$staging/$file" "$target/$file"
           done
@@ -72,10 +75,12 @@ jobs:
       - name: Verify SiteGround origin
         run: |
           set -euo pipefail
-          for path in /index.html /; do
+          for path in / /index.html /studio.html /capabilities.html /process.html /explorations.html /contact.html /privacy.html /site.css /site.js /favicon.svg; do
+            expected="${path#/}"
+            if [ -z "$expected" ]; then expected=index.html; fi
             matched=false
             for attempt in 1 2 3 4 5; do
-              if curl --fail --silent --show-error --max-time 20 --resolve "robodev.online:443:$SG_ORIGIN_IP" -H 'Cache-Control: no-cache' "https://robodev.online$path" -o /tmp/deployed-page.html && cmp -s index.html /tmp/deployed-page.html; then
+              if curl --fail --silent --show-error --max-time 20 --resolve "robodev.online:443:$SG_ORIGIN_IP" -H 'Cache-Control: no-cache' "https://robodev.online$path" -o /tmp/deployed-page.html && cmp -s "$expected" /tmp/deployed-page.html; then
                 matched=true
                 break
               fi
