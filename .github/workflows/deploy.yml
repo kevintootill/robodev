@@ -71,10 +71,22 @@ jobs:
           REMOTE
       - name: Verify SiteGround origin
         run: |
-          curl --fail --location --silent --show-error --max-time 30 --resolve "robodev.online:80:$SG_ORIGIN_IP" --resolve "robodev.online:443:$SG_ORIGIN_IP" http://robodev.online/index.html -o /tmp/deployed-index.html
-          cmp index.html /tmp/deployed-index.html
-          curl --fail --location --silent --show-error --max-time 30 --resolve "robodev.online:80:$SG_ORIGIN_IP" --resolve "robodev.online:443:$SG_ORIGIN_IP" http://robodev.online/ -o /tmp/deployed-root.html
-          cmp index.html /tmp/deployed-root.html
+          set -euo pipefail
+          for path in /index.html /; do
+            matched=false
+            for attempt in 1 2 3 4 5; do
+              if curl --fail --silent --show-error --max-time 20 --resolve "robodev.online:443:$SG_ORIGIN_IP" -H 'Cache-Control: no-cache' "https://robodev.online$path" -o /tmp/deployed-page.html && cmp -s index.html /tmp/deployed-page.html; then
+                matched=true
+                break
+              fi
+              sleep 3
+            done
+            if [ "$matched" != true ]; then
+              echo "Published content does not match the repository at $path"
+              head -c 200 /tmp/deployed-page.html || true
+              exit 1
+            fi
+          done
       - name: Remove runner SSH key
         if: always()
         run: rm -f ~/.ssh/siteground
