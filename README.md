@@ -11,6 +11,10 @@ Motion includes rotating geometry, scanning panels, pointer parallax and page tr
 Visitors can pause motion, choose an accent palette and change the exploration composition
 and pace. Device reduced-motion preferences are respected.
 
+Visual transmission consoles on the five editorial pages offer nine keypad channels,
+CRT scanlines, animated waveforms, standby shutters and retractable instrument panels.
+The code-bracket brand emblem is retained.
+
 Run `node tools/preview.mjs` for a local preview at http://127.0.0.1:4178.
 The local preview does not send contact messages.
 

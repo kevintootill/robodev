@@ -88,3 +88,21 @@
   const updateClock=()=>{clock.textContent='LONDON / '+clockFormat.format(new Date());};
   updateClock();setInterval(updateClock,1000);
 })();
+(() => {
+ const consolePanel=document.querySelector('.console'); if(!consolePanel)return;
+ const screen=consolePanel.querySelector('.tv-screen');
+ const names=['VECTOR FIELD','ORBITAL ARRAY','SIGNAL / NOISE','PRISMATIC SPACE','HORIZONTAL SCAN','PULSE ENGINE','WAVE FORM','GRID REFERENCE','SLOW DRIFT'];
+ consolePanel.querySelectorAll('[data-channel-key]').forEach(key=>key.addEventListener('click',()=>{
+  const channel=Number(key.dataset.channelKey); screen.dataset.channel=String(channel);
+  consolePanel.querySelectorAll('[data-channel-key]').forEach(button=>button.setAttribute('aria-pressed',String(button===key)));
+  document.querySelector('#channel-number').textContent=String(channel).padStart(2,'0');document.querySelector('#channel-output').textContent=String(channel).padStart(2,'0');document.querySelector('#channel-title').textContent=names[channel-1];
+  consolePanel.classList.remove('channel-switch');void screen.offsetWidth;consolePanel.classList.add('channel-switch');
+ }));
+ consolePanel.querySelector('.screen-power').addEventListener('click',event=>{
+  const off=screen.classList.toggle('screen-off');event.currentTarget.setAttribute('aria-pressed',String(off));event.currentTarget.textContent=off?'Wake screen':'Screen standby';consolePanel.querySelector('.status-led').textContent=off?'● STANDBY':'● SIGNAL ACTIVE';
+ });
+ consolePanel.querySelector('.drawer-toggle').addEventListener('click',event=>{
+  const closed=document.querySelector('#console-drawer').classList.toggle('is-closed');event.currentTarget.setAttribute('aria-expanded',String(!closed));event.currentTarget.firstChild.textContent=closed?'Deploy instrument panels ':'Retract instrument panels ';
+  document.querySelector('#console-drawer').inert=closed;
+ });
+})();
